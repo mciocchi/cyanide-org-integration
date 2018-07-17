@@ -39,3 +39,22 @@ integration for a CyanIDE project:
                      :teardown-hook '()
                      :path "~/.emacs.d/")
 ```
+
+## CyanIDE Ecosystem
+
+cyanide-org-integration is a part of the CyanIDE ecosystem, which includes the
+following other utilities:
+
+### [CyanIDE](https://github.com/mciocchi/cyanide)
+
+Utility to work with projects and artifacts in emacs.
+
+### [cyanide-treemacs-view](https://github.com/mciocchi/cyanide-treemacs-view)
+
+launches a [treemacs](https://github.com/Alexander-Miller/treemacs) sidebar in the current project
+which can be configured to automatically pop up at project load time
+
+### [cyanide-shell-view](https://github.com/mciocchi/cyanide-shell-view)
+
+can instantly launch or close a full screen shell instance in the current
+project root.
