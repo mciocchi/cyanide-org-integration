@@ -66,13 +66,16 @@ Last updated: %U")
   (interactive)
   (if (and cyanide-current-project
            (slot-exists-p (cyanide-get-current-project) 'org-capture-templates))
-      (progn (setq org-capture-templates-prev org-capture-templates)
+      (progn (when (bound-and-true-p org-capture-templates)
+               (setq org-capture-templates-orig org-capture-templates))
              (setq org-capture-templates (eval
                                           (cyanide-project-oref
                                            :org-capture-templates)))
              (org-capture)
-             (setq org-capture-templates org-capture-templates-prev)
-             (makunbound org-capture-templates-prev))
+             (if (bound-and-true-p org-capture-templates-orig)
+                 (setq org-capture-templates org-capture-templates-orig)
+               (makunbound 'org-capture-templates))
+             (makunbound 'org-capture-templates-orig))
     (org-capture))) ; else
 
 (provide 'cyanide-org-integration)
