@@ -78,4 +78,30 @@ Last updated: %U")
              (makunbound 'org-capture-templates-orig))
     (org-capture))) ; else
 
+(defmethod cyanide-org-file-paths ((proj cyanide-project))
+  (when (child-of-class-p (class-of proj) 'cyanide-org-project)
+    (let ((path (oref proj :path))
+          (org-files (oref proj :org-files)))
+      (mapcar (lambda (file) (concat path file)) org-files))))
+
+(defun cyanide-org-all-files (&optional buf)
+  (interactive)
+  (when (not (bound-and-true-p buf)) (setq buf "*cyanide-org-all-files*"))
+  (when (get-buffer buf) (kill-buffer-ask (get-buffer buf)))
+  (switch-to-buffer buf)
+  (org-mode)
+  (mapcar
+   (lambda (proj)
+     (let ((org-file-paths (cyanide-org-file-paths proj)))
+       (when
+           org-file-paths
+         (mapcar
+          (lambda (path)
+            (when
+                (file-exists-p path)
+              (insert-file path)))
+          org-file-paths))))
+   cyanide-project-collection)
+  (org-shifttab 2))
+
 (provide 'cyanide-org-integration)
